@@ -58,8 +58,9 @@ x = sp.symbols('x')
 
 str_expr = "exp(x) + x**2"
 a, b = -1, 1
-samples = 1000
-eps = (b - a) / samples
+eps = 10 ** (-3)
+delta = 10 ** (-7)
+samples = round((b - a) / eps)
 
 expr = sp.sympify(str_expr)
 f = sp.lambdify(x, expr, modules=['numpy', 'math'])
@@ -71,11 +72,13 @@ Y = f(X)
 bfX, bfY, bf_cnt = brute_force_method(f, a, b, eps)
 print(f"Brute Force Method Result: f_min = f({bfX}) = {bfY}, count of calculations = {bf_cnt}")
 
-dhX, dhY, dh_cnt = dihotomy(f, a, b, eps)
+dhX, dhY, dh_cnt = dihotomy(f, a, b, eps, delta)
 print(f"Dihotomy Method Result: f_min = f({dhX}) = {dhY}, count of calculations = {dh_cnt}")
 
-plt.plot(X, Y)
+plt.plot(X, Y, color="green")
 plt.axvline(bfX, color="red", linestyle="--", linewidth=2, label="Brute force")
 plt.axhline(bfY, color="red", linestyle="--", linewidth=2, label="Brute force")
+plt.axvline(dhX, color="blue", linestyle="--", linewidth=1, label="Dihotomy")
+plt.axhline(dhY, color="blue", linestyle="--", linewidth=1, label="Dihotomy")
 
 plt.savefig("res.png", dpi=300)
