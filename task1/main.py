@@ -56,8 +56,11 @@ def dihotomy(func, a, b, eps, delta=None):
 
 x = sp.symbols('x')
 
-str_expr = "exp(x) + x**2"
-a, b = -1, 1
+# str_expr = "exp(x) + x ** 2"
+# str_expr = "sin(x) + 0.1 * x"
+str_expr = "-x"
+# a, b = -1, 1
+a, b = 0, 5
 eps = 10 ** (-3)
 delta = 10 ** (-7)
 samples = round((b - a) / eps)
