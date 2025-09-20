@@ -56,11 +56,10 @@ def dihotomy(func, a, b, eps, delta=None):
 
 x = sp.symbols('x')
 
-# str_expr = "exp(x) + x ** 2"
+str_expr = "exp(x) + x ** 2"
 # str_expr = "sin(x) + 0.1 * x"
-str_expr = "-x"
-# a, b = -1, 1
-a, b = 0, 5
+a, b = -1, 1
+# a, b = 0, 5
 eps = 10 ** (-3)
 delta = 10 ** (-7)
 samples = round((b - a) / eps)
@@ -84,4 +83,4 @@ plt.axhline(bfY, color="red", linestyle="--", linewidth=2, label="Brute force")
 plt.axvline(dhX, color="blue", linestyle="--", linewidth=1, label="Dihotomy")
 plt.axhline(dhY, color="blue", linestyle="--", linewidth=1, label="Dihotomy")
 
-plt.savefig("res.png", dpi=300)
+plt.savefig("task1/res.png", dpi=300)
