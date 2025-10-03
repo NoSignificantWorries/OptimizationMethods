@@ -44,7 +44,7 @@ def find_L(expr, var, func, a, b, n_points=N_POINTS):
     return L
 
 
-def chord_method(func, a, b, eps, L):
+def broken_lines_method(func, a, b, eps, L):
     f_a, f_b = func(a), func(b)
     
     x_star, f_star = (a, f_a) if f_a < f_b else (b, f_b)
@@ -115,14 +115,14 @@ if __name__ == "__main__":
     X = np.linspace(a, b, samples)
     Y = f(X)
 
-    pX, pY, chX, chY, ch_cnt = chord_method(f, a, b, eps, L)
-    print(f"Chord Method Result: f_min = f({chX}) = {chY}, count of calculations = {ch_cnt}")
+    pX, pY, chX, chY, ch_cnt = broken_lines_method(f, a, b, eps, L)
+    print(f"Brocken Lines Method Result: f_min = f({chX}) = {chY}, count of calculations = {ch_cnt}")
 
     plt.plot(X, Y, color="green")
     plt.plot(pX, pY, "bo")
     plt.axvline(chX, color="red", linestyle="--", linewidth=2)
     plt.axhline(chY, color="red", linestyle="--", linewidth=2)
 
-    plt.savefig("task2/chord_method.png", dpi=300)
+    plt.savefig("task2/broken_lines_method.png", dpi=300)
 
 
