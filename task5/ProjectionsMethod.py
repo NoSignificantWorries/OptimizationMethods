@@ -92,16 +92,17 @@ def projected_gradient_descent(f, grad_f, proj, x0, learning_rate=0.1,
     x = np.array(x0, dtype=float)
     history = []
     
+    alpha = learning_rate
     for i in range(max_iter):
         f_val = f(x)
         history.append((x.copy(), f_val))
         
         gradient = grad_f(x)
-        
-        if callable(learning_rate):
-            alpha = learning_rate(i)
-        else:
-            alpha = learning_rate
+
+        f_new = f(x - alpha * gradient)
+        while f_new >= f_val:
+            alpha = alpha / 2
+            f_new = f(x - alpha * gradient)
         
         x_new = x - alpha * gradient
         
@@ -147,7 +148,11 @@ if __name__ == "__main__":
         return 16 ** x[0] + 27 ** x[1] + 16 ** x[2]
     
     def grad_f(x):
-        return 16 ** x[0] * np.log(16) + 27 ** x[1] * np.log(27) + 16 ** x[2] * np.log(16)
+        return np.array([
+            16 ** x[0] * np.log(16),
+            27 ** x[1] * np.log(27),
+            16 ** x[2] * np.log(16)
+        ])
     
     def proj_unit_circle(x):
         norm = np.linalg.norm(x)
@@ -164,7 +169,7 @@ if __name__ == "__main__":
         f, grad_f, proj_unit_circle, x0, 
         learning_rate=0.1,
         max_iter=1000,
-        tol=1e-4,
+        tol=1e-3,
         verbose=True
     )
 

@@ -88,7 +88,7 @@ def visualize_3d_trajectory_plotly(history):
     return fig
 
 
-def conditional_gradient(f, grad_f, linear_minimizer, x0, max_iter=1000, tol=1e-6, verbose=False):
+def conditional_gradient(f, grad_f, linear_minimizer, x0, max_iter=1000, tol=1e-6, verbose=False, line_search=False):
     x = np.array(x0, dtype=float)
     history = []
     
@@ -110,7 +110,15 @@ def conditional_gradient(f, grad_f, linear_minimizer, x0, max_iter=1000, tol=1e-
                 print(f"Сходимость достигнута на итерации {i+1}")
             break
         
-        gamma = 2.0 / (i + 2)
+        if line_search:
+            def phi(gamma): return f(x + gamma * (s - x))
+            
+            gammas = np.linspace(0, 1, 100)
+            f_values = [phi(g) for g in gammas]
+            gamma_opt = gammas[np.argmin(f_values)]
+            gamma = gamma_opt
+        else:
+            gamma = 2.0 / (i + 2)
         
         x = x + gamma * (s - x)
     
@@ -161,7 +169,7 @@ if __name__ == "__main__":
             return x
         return x / norm
     
-    x0 = np.array([0.1, 0.1, 0.1])
+    x0 = np.array([1/2, 1/3, 1/4])
     
     if np.linalg.norm(x0) > 1:
         x0 = proj_unit_circle(x0)
